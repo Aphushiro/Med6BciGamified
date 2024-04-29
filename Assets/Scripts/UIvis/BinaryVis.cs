@@ -28,7 +28,7 @@ public class BinaryVis : MonoBehaviour
 
     public void PingImg (MotorImageryEvent newEvent)
     {
-        if (newEvent == MotorImageryEvent.)
+        if (newEvent == MotorImageryEvent.MotorImagery)
         fade = fadeAdd;
     }
 
