@@ -31,6 +31,7 @@ public class LoggingManager : MonoBehaviour
     [SerializeField]
     private bool CreateMetaCollection = true;
 
+
 	[Header("MySQL Save Settings")]
     [SerializeField]
     private bool enableMySQLSave = true;
