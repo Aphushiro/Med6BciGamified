@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 public class MaxThresholdScript : MonoBehaviour
 {
-    Slider MaxSlider;
+    public static MaxThresholdScript Instance;
+    
+    [HideInInspector]
+    public Slider MaxSlider;
     public Slider absoluteSlider;
     
     public float maxHealth = 100;
@@ -17,13 +20,27 @@ public class MaxThresholdScript : MonoBehaviour
     private Coroutine _myCoroutine;
     private bool _isCoroutineRunning = false;
 
+   /* private void Awake()
+    {
+        if (Instance != null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
+    }
+    */
+
     private void Start()
     {
         MaxSlider = GetComponent<Slider>();
         
     }
 
-    public void SetSliderMax (float MaxVal)
+    public void SetSliderMax()
     {
 
         if (absoluteSlider.value > MaxSlider.value)
@@ -48,14 +65,15 @@ public class MaxThresholdScript : MonoBehaviour
     {
         _isCoroutineRunning = true;
         Debug.Log("Start New Coroutine!");
-        // Wait for 6 seconds
+        
+        
         yield return new WaitForSeconds(6f);
 
-        // Call your method here
+     
         TakeDamage();
         MaxSlider.value = 0;
 
-        // Coroutine ends here
+        _isCoroutineRunning = false;
     }
 
     

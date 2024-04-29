@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2512955022163022852}
-  - component: {fileID: 2512955022163022851}
+  - component: {fileID: 2769393863804205600}
   m_Layer: 0
   m_Name: ChoppableWood
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2512955022163022851
+--- !u!114 &2769393863804205600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,9 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2512955022163022850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18f8136892d9e164c8c502bc4a913e09, type: 3}
+  m_Script: {fileID: 11500000, guid: e77d5206f9a43bc47a47f31e2f5b7e4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
   MaxSlider: {fileID: 0}
+  absoluteSlider: {fileID: 0}
+  maxHealth: 100
+  currentHealth: 100
