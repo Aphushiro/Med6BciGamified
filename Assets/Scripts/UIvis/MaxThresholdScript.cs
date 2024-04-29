@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,15 @@ public class MaxThresholdScript : MonoBehaviour
         if (absoluteSlider.value > MaxSlider.value)
         {
             MaxSlider.value = absoluteSlider.value;
+        }
+        
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            MaxSlider.value = 0;
         }
     }
 }
