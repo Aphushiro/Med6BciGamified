@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class MaxThresholdScript : MonoBehaviour
 {
     public static MaxThresholdScript Instance;
-    
+
     //BCI Meter
     public Slider MaxSlider;
     public Slider absoluteSlider;
-    
+
     //GameObject
     public GameObject GameObject;
     public Image healthBarImage;
@@ -28,8 +28,8 @@ public class MaxThresholdScript : MonoBehaviour
 
     public int attackTimer = 6;
 
-    
-    
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -40,13 +40,14 @@ public class MaxThresholdScript : MonoBehaviour
         {
             Destroy(this);
         }
+
         DontDestroyOnLoad(this);
     }
 
     private void Start()
     {
         //MaxSlider = GetComponent<Slider>();
-        
+
     }
 
     public void SetSliderMax()
@@ -57,59 +58,59 @@ public class MaxThresholdScript : MonoBehaviour
             MaxSlider.value = absoluteSlider.value;
             _damageAmount = MaxSlider.value;
         }
-        
+
     }
 
     public void BCI_Action()
     {
-        
+
         if (_isCoroutineRunning == false)
         {
             _myCoroutine = StartCoroutine(MyCoroutine());
         }
-        
+
     }
 
     IEnumerator MyCoroutine()
     {
         _isCoroutineRunning = true;
         Debug.Log("Start New Coroutine!");
-        
-        StartCoroutine(LerpFillAmountOverTime(0f,6f));
+
+        StartCoroutine(LerpFillAmountOverTime(0f, 6f));
         yield return new WaitForSeconds(attackTimer);
 
         ClockImage.fillAmount = 1;
 
-     
+
         TakeDamage();
         MaxSlider.value = 0;
 
         _isCoroutineRunning = false;
     }
 
-    
+
     public void TakeDamage()
     {
         currentHealth -= _damageAmount;
         UpdateHealthBar();
-        Debug.Log("Health:"+currentHealth);
-        
+        Debug.Log("Health:" + currentHealth);
+
         if (currentHealth <= 0)
         {
             currentHealth = maxHealth;
-            
+
             Debug.Log("Try: Destroy Wood");
         }
-        
+
     }
-    
+
     void UpdateHealthBar()
     {
         float fillAmount = currentHealth / maxHealth;
         HealthBarImageRed.fillAmount = fillAmount;
         StartCoroutine(LerpFillAmount(fillAmount));
     }
-    
+
     IEnumerator LerpFillAmount(float targetFillAmount)
     {
         float originalFillAmount = healthBarImage.fillAmount;
@@ -125,16 +126,16 @@ public class MaxThresholdScript : MonoBehaviour
 
         healthBarImage.fillAmount = targetFillAmount;
         if (healthBarImage.fillAmount == 0)
-        { 
+        {
             //yield return new WaitForSeconds(2f);
             HealthBarImageRed.fillAmount = 1;
             healthBarImage.fillAmount = 1;
         }
-        
-        
-        
+
+
+
     }
-    
+
     IEnumerator LerpFillAmountOverTime(float targetFillAmount, float duration)
     {
         float startTime = Time.time;
@@ -145,8 +146,6 @@ public class MaxThresholdScript : MonoBehaviour
             float elapsedTime = Time.time - startTime;
             float t = elapsedTime / duration; // Calculate interpolation factor
 
-            // Apply an ease-in-out function to the interpolation factor for smoother animation
-            t = Mathf.SmoothStep(0f, 1f, t);
 
             ClockImage.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, t);
             yield return null;
@@ -154,27 +153,5 @@ public class MaxThresholdScript : MonoBehaviour
 
         ClockImage.fillAmount = targetFillAmount; // Ensure final value is exactly as intended
     }
-    
-    
-    /*
-    private void Update()
-    {
-        
-        //Skal nok ændres til coroutines.
-        //Fra input start og nogle sekunder frem, skal max værdi gemmes og nulstilles
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            //MaxSlider.value = 0;
-        }
 
-        if (Input.GetKeyUp(KeyCode.V))
-        {
-            TakeDamage();
-        }
-    }
-    
-    */
-    
-    
-    
 }
