@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random=UnityEngine.Random;
 
 public class MaxThresholdScript : MonoBehaviour
 {
@@ -23,6 +24,12 @@ public class MaxThresholdScript : MonoBehaviour
     public float currentHealth = 100f;
     private float _damageAmount;
     public float fillSpeed = 1f;
+    
+    //Audio
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] private AudioClip[] arraySounds;
+    private int arrayMax;
+    private int soundToPlay;
 
    
     //Coroutine
@@ -50,6 +57,12 @@ public class MaxThresholdScript : MonoBehaviour
         }
 
         DontDestroyOnLoad(this);
+        
+        arrayMax = arraySounds.Length;
+        
+        
+        
+        
     }
 
    
@@ -60,6 +73,7 @@ public class MaxThresholdScript : MonoBehaviour
         if (absoluteSlider.value > MaxSlider.value)
         {
             MaxSlider.value = absoluteSlider.value;
+            audioSource.volume = MaxSlider.value;
             _damageAmount = MaxSlider.value;
         }
 
@@ -102,6 +116,10 @@ public class MaxThresholdScript : MonoBehaviour
     {
         currentHealth -= _damageAmount;
         UpdateHealthBar();
+        
+        soundToPlay = Random.Range(0, arrayMax);
+        audioSource.clip = arraySounds[soundToPlay];
+        audioSource.Play();
         Debug.Log("Health:" + currentHealth);
         
         if (currentHealth <= 0)
