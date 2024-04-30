@@ -16,6 +16,7 @@ public class MaxThresholdScript : MonoBehaviour
     public GameObject GameObject;
     public Image healthBarImage;
     public Image HealthBarImageRed;
+    public Image ClockImage;
     public float maxHealth = 100f;
     public float currentHealth = 100f;
     private float _damageAmount;
@@ -24,6 +25,8 @@ public class MaxThresholdScript : MonoBehaviour
     //Coroutine
     private Coroutine _myCoroutine;
     private bool _isCoroutineRunning = false;
+
+    public int attackTimer = 6;
 
     
     
@@ -72,8 +75,10 @@ public class MaxThresholdScript : MonoBehaviour
         _isCoroutineRunning = true;
         Debug.Log("Start New Coroutine!");
         
-        
-        yield return new WaitForSeconds(6f);
+        StartCoroutine(LerpFillAmountOverTime(0f,6f));
+        yield return new WaitForSeconds(attackTimer);
+
+        ClockImage.fillAmount = 1;
 
      
         TakeDamage();
@@ -120,17 +125,36 @@ public class MaxThresholdScript : MonoBehaviour
 
         healthBarImage.fillAmount = targetFillAmount;
         if (healthBarImage.fillAmount == 0)
-        {
-            Debug.Log("YoWhat");
+        { 
             //yield return new WaitForSeconds(2f);
             HealthBarImageRed.fillAmount = 1;
             healthBarImage.fillAmount = 1;
-            Debug.Log("The fuck");
         }
         
         
         
     }
+    
+    IEnumerator LerpFillAmountOverTime(float targetFillAmount, float duration)
+    {
+        float startTime = Time.time;
+        float startFillAmount = ClockImage.fillAmount;
+
+        while (Time.time < startTime + duration)
+        {
+            float elapsedTime = Time.time - startTime;
+            float t = elapsedTime / duration; // Calculate interpolation factor
+
+            // Apply an ease-in-out function to the interpolation factor for smoother animation
+            t = Mathf.SmoothStep(0f, 1f, t);
+
+            ClockImage.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, t);
+            yield return null;
+        }
+
+        ClockImage.fillAmount = targetFillAmount; // Ensure final value is exactly as intended
+    }
+    
     
     /*
     private void Update()

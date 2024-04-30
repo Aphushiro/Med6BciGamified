@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1df7cdd0-1573-4996-aca0-4699c827de95" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Med6BciGamified/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Med6BciGamified/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ChoppableWood.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ChoppableWood.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UIvis/MaxThresholdScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UIvis/MaxThresholdScript.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
