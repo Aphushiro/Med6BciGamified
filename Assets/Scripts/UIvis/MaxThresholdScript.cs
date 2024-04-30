@@ -7,13 +7,15 @@ using UnityEngine.UI;
 public class MaxThresholdScript : MonoBehaviour
 {
     public static MaxThresholdScript Instance;
+    public DestroyLogScript destroyLogScript;
 
     //BCI Meter
     public Slider MaxSlider;
     public Slider absoluteSlider;
 
     //GameObject
-    public GameObject GameObject;
+    public GameObject ChopLog;
+    public Transform ParentGameobject;
     public Image healthBarImage;
     public Image HealthBarImageRed;
     public Image ClockImage;
@@ -22,16 +24,22 @@ public class MaxThresholdScript : MonoBehaviour
     private float _damageAmount;
     public float fillSpeed = 1f;
 
+   
     //Coroutine
     private Coroutine _myCoroutine;
     private bool _isCoroutineRunning = false;
 
+    public bool _isRestingPeriod = false;
     public int attackTimer = 6;
+
+    private GameObject logCopy;
 
 
 
     private void Awake()
     {
+        logCopy = Instantiate(ChopLog, ParentGameobject.transform);
+        
         if (Instance == null)
         {
             Instance = this;
@@ -44,11 +52,7 @@ public class MaxThresholdScript : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    private void Start()
-    {
-        //MaxSlider = GetComponent<Slider>();
-
-    }
+   
 
     public void SetSliderMax()
     {
@@ -67,6 +71,9 @@ public class MaxThresholdScript : MonoBehaviour
         if (_isCoroutineRunning == false)
         {
             _myCoroutine = StartCoroutine(MyCoroutine());
+           // _isRestingPeriod = true;
+           // StartCoroutine(WaitForTime(8));
+            
         }
 
     }
@@ -76,13 +83,15 @@ public class MaxThresholdScript : MonoBehaviour
         _isCoroutineRunning = true;
         Debug.Log("Start New Coroutine!");
 
-        StartCoroutine(LerpFillAmountOverTime(0f, 6f));
+        StartCoroutine(LerpFillAmountOverTime(0f, attackTimer));
         yield return new WaitForSeconds(attackTimer);
 
+        //Resets clock fill after attack
         ClockImage.fillAmount = 1;
 
 
         TakeDamage();
+        //Resets MaxValue of slider
         MaxSlider.value = 0;
 
         _isCoroutineRunning = false;
@@ -94,11 +103,11 @@ public class MaxThresholdScript : MonoBehaviour
         currentHealth -= _damageAmount;
         UpdateHealthBar();
         Debug.Log("Health:" + currentHealth);
-
+        
         if (currentHealth <= 0)
         {
             currentHealth = maxHealth;
-
+            Destroy(logCopy);
             Debug.Log("Try: Destroy Wood");
         }
 
@@ -130,6 +139,8 @@ public class MaxThresholdScript : MonoBehaviour
             //yield return new WaitForSeconds(2f);
             HealthBarImageRed.fillAmount = 1;
             healthBarImage.fillAmount = 1;
+            logCopy = Instantiate(ChopLog, ParentGameobject.transform);
+            
         }
 
 
@@ -152,6 +163,12 @@ public class MaxThresholdScript : MonoBehaviour
         }
 
         ClockImage.fillAmount = targetFillAmount; // Ensure final value is exactly as intended
+    }
+    
+    IEnumerator WaitForTime(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        _isRestingPeriod = false;
     }
 
 }
