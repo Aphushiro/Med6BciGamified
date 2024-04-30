@@ -7,6 +7,7 @@ using Random=UnityEngine.Random;
 
 public class MaxThresholdScript : MonoBehaviour
 {
+    //References
     public static MaxThresholdScript Instance;
     public DestroyLogScript destroyLogScript;
 
@@ -16,12 +17,16 @@ public class MaxThresholdScript : MonoBehaviour
 
     //GameObject
     public GameObject ChopLog;
+    private GameObject logCopy;
     public Transform ParentGameobject;
+    
     public Image healthBarImage;
     public Image HealthBarImageRed;
     public Image ClockImage;
+    
     public float maxHealth = 100f;
     public float currentHealth = 100f;
+    
     private float _damageAmount;
     public float fillSpeed = 1f;
     
@@ -38,15 +43,11 @@ public class MaxThresholdScript : MonoBehaviour
 
     public bool _isRestingPeriod = false;
     public int attackTimer = 6;
-
-    private GameObject logCopy;
-
-
-
+    
+     //////////////////////////////////////////////////////////////////////////////////////////////////////
+     
     private void Awake()
     {
-        logCopy = Instantiate(ChopLog, ParentGameobject.transform);
-        
         if (Instance == null)
         {
             Instance = this;
@@ -58,25 +59,21 @@ public class MaxThresholdScript : MonoBehaviour
 
         DontDestroyOnLoad(this);
         
+        logCopy = Instantiate(ChopLog, ParentGameobject.transform);
+        
         arrayMax = arraySounds.Length;
-        
-        
-        
-        
     }
 
    
 
     public void SetSliderMax()
     {
-
         if (absoluteSlider.value > MaxSlider.value)
         {
             MaxSlider.value = absoluteSlider.value;
             audioSource.volume = MaxSlider.value;
             _damageAmount = MaxSlider.value;
         }
-
     }
 
     public void BCI_Action()
@@ -87,9 +84,7 @@ public class MaxThresholdScript : MonoBehaviour
             _myCoroutine = StartCoroutine(MyCoroutine());
            // _isRestingPeriod = true;
            // StartCoroutine(WaitForTime(8));
-            
         }
-
     }
 
     IEnumerator MyCoroutine()
@@ -102,8 +97,7 @@ public class MaxThresholdScript : MonoBehaviour
 
         //Resets clock fill after attack
         ClockImage.fillAmount = 1;
-
-
+        
         TakeDamage();
         //Resets MaxValue of slider
         MaxSlider.value = 0;
@@ -128,7 +122,6 @@ public class MaxThresholdScript : MonoBehaviour
             Destroy(logCopy);
             Debug.Log("Try: Destroy Wood");
         }
-
     }
 
     void UpdateHealthBar()
@@ -158,11 +151,7 @@ public class MaxThresholdScript : MonoBehaviour
             HealthBarImageRed.fillAmount = 1;
             healthBarImage.fillAmount = 1;
             logCopy = Instantiate(ChopLog, ParentGameobject.transform);
-            
         }
-
-
-
     }
 
     IEnumerator LerpFillAmountOverTime(float targetFillAmount, float duration)
@@ -179,7 +168,6 @@ public class MaxThresholdScript : MonoBehaviour
             ClockImage.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, t);
             yield return null;
         }
-
         ClockImage.fillAmount = targetFillAmount; // Ensure final value is exactly as intended
     }
     
@@ -188,5 +176,4 @@ public class MaxThresholdScript : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         _isRestingPeriod = false;
     }
-
 }
