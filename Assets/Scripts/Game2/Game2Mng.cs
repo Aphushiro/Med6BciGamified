@@ -5,9 +5,16 @@ using UnityEngine;
 public class Game2Mng : MonoBehaviour
 {
     public static Game2Mng Instance;
+    ClockMng clock;
 
     public Color colorChoice;
     public List<Color> colorPalette;
+
+    public GameObject bucketObj;
+    int bucketCount = 0;
+
+    public float restTime = 8f;
+    public bool isResting = false;
 
     private void Awake()
     {
@@ -24,29 +31,31 @@ public class Game2Mng : MonoBehaviour
 
     void Start()
     {
-        colorChoice = Color.white;
+        colorChoice = colorPalette[0];
+        clock = GetComponentInChildren<ClockMng>();
     }
 
-    public List<Color> GetColors (int count)
+    public void OnMiEvent ()
     {
-        List<Color> colList = new List<Color>();
-        for (int i = 0; i < count; i++)
-        {
-            int r = Random.Range(0, colorPalette.Count);
-            colList.Add(colorPalette[i]);
-            colorPalette.RemoveAt(i);
-        }
 
-        for (int i = 0; i < colList.Count; i++)
-        {
-            colorPalette.Add(colList[i]);
-        }
-        return colList;
+        if (isResting) { return; }
+        bucketCount++;
+        int clockState = clock.GetClockState();
+        colorChoice = colorPalette[clockState];
+
+        int orient = 1;
+        if (bucketCount%2 == 1) { orient = -1; }
+
+        Vector2 bucketPos = new Vector2(-6f * orient, 3.8f);
+        GameObject bucket = Instantiate(bucketObj, bucketPos, Quaternion.identity);
+        BucketPref bucketCs = bucket.GetComponent<BucketPref>();
+        bucketCs.dir = orient;
+        StartCoroutine(BucketRest());
     }
 
-    public void ChangeColor (int id)
+    IEnumerator BucketRest ()
     {
-        colorChoice = colorPalette[id];
+        yield return new WaitForSeconds(restTime);
+        isResting = false;
     }
-
 }

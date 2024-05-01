@@ -4,16 +4,35 @@ using UnityEngine;
 
 public class BucketPref : MonoBehaviour
 {
-    Game2Mng mng;
+    Color toPaint;
+    public GameObject pelletPrefab;
 
-    void Start()
+    [HideInInspector]
+    public float dir = 1f;
+    float speed = 1.0f;
+    float distance = 8f;
+
+    float spawnTime = 0f;
+    float cTimeToSpawn = 0f;
+
+    private void Start()
     {
-        mng = Game2Mng.Instance;
+        toPaint = Game2Mng.Instance.colorChoice;
+        speed = distance / Game2Mng.Instance.restTime;
+        Destroy(gameObject, Game2Mng.Instance.restTime);
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        float dist = Time.deltaTime * speed * dir;
+        transform.Translate(Vector2.right*dist);
+        cTimeToSpawn -= Time.deltaTime;
+        if (cTimeToSpawn <= 0f)
+        {
+            GameObject pellet = Instantiate(pelletPrefab, transform.position, Quaternion.identity);
+            pellet.GetComponentInChildren<SpriteRenderer>().color = toPaint;
+            spawnTime += Random.Range(0, Time.deltaTime/20);
+            cTimeToSpawn = spawnTime;
+        }
     }
 }
