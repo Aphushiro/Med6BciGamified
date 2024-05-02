@@ -16,14 +16,10 @@ public class BaseballGameScript : MonoBehaviour
     private Coroutine _myCoroutine;
     private bool _isCoroutineRunning = false;
     
-    public float forceMultiplier = 10f; // You can adjust this value according to your requirements
-    public float maxNoiseAngle = 20f; // Maximum angle for noise in degrees
+    public float forceMagnitude = 10f; // Adjust the force magnitude as needed
+    public Rigidbody2D rb;
     
-    void Start()
-    {
-        
-    }
-    
+   
     
     public void SetSliderMax()
     {
@@ -36,32 +32,26 @@ public class BaseballGameScript : MonoBehaviour
     
     public void BCI_Action()
     {
-        FireBall();
         if (_isCoroutineRunning == false)
         {
           //  _myCoroutine = StartCoroutine(MyCoroutine());
-           
         }
+        FireBall();
     }
-    
-   
 
-    
-
-    
-
-    void FireBall()
+    public void FireBall()
     {
-        // Get the original direction the ball should be fired in
-        Vector3 originalDirection = transform.forward;
+        // Calculate the direction of the force
+        Vector2 forceDirection = new Vector2(1, 1).normalized; // 45-degree angle
 
-        // Add noise to the direction
-        Vector3 noisyDirection = Quaternion.Euler(Random.Range(-maxNoiseAngle, maxNoiseAngle), Random.Range(-maxNoiseAngle, maxNoiseAngle), 0) * originalDirection;
-
-        // Apply force to the ball
-        Ball.AddForce(noisyDirection * MaxSlider.value, ForceMode.Impulse);
+        // Apply the force to the ball
+        rb.AddForce(forceDirection * forceMagnitude, ForceMode2D.Impulse);
     }
+
     
-   
+
+    
+
+    
     
 }

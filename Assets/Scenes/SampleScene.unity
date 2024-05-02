@@ -1836,7 +1836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyLogScript: {fileID: -5229658319953030470, guid: f15d79f0332f4f4409c30455f4ca6ba2, type: 3}
-  BCI_InputMinimum: 0
+  BCI_InputMinimum: 0.4
   MaxSlider: {fileID: 796809480}
   absoluteSlider: {fileID: 274900978}
   ChopLog: {fileID: 1479960919743008859, guid: f15d79f0332f4f4409c30455f4ca6ba2, type: 3}
