@@ -11,6 +11,8 @@ public class MaxThresholdScript : MonoBehaviour
     public static MaxThresholdScript Instance;
     public DestroyLogScript destroyLogScript;
 
+    public float BCI_InputMinimum;
+
     //BCI Meter
     public Slider MaxSlider;
     public Slider absoluteSlider;
@@ -108,7 +110,12 @@ public class MaxThresholdScript : MonoBehaviour
 
     public void TakeDamage()
     {
-        currentHealth -= _damageAmount;
+
+        if (BCI_InputMinimum >= 0.4)
+        {
+            currentHealth -= _damageAmount- BCI_InputMinimum;
+        }
+        
         UpdateHealthBar();
         
         soundToPlay = Random.Range(0, arrayMax);
