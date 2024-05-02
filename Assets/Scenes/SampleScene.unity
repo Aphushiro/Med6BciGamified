@@ -252,7 +252,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160431063}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cbda6680f5fae447a416bb8f4b62e14, type: 3}
   m_Name: 
@@ -342,7 +342,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160431063}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e5ad83a9535c6f46ae36da9869377b8, type: 3}
   m_Name: 
@@ -368,7 +368,7 @@ MonoBehaviour:
       - m_Target: {fileID: 274900979}
         m_TargetAssemblyTypeName: AbsoluteUiVis, Assembly-CSharp
         m_MethodName: SetSliderVal
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

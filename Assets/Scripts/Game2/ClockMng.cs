@@ -27,7 +27,7 @@ public class ClockMng : MonoBehaviour
         handParent.Rotate(Vector3.forward, rotAmount);
 
         float zRot = handParent.rotation.eulerAngles.z;
-        Debug.Log(zRot);
+        //Debug.Log(zRot);
         // Reset colors
         for (int i = 0; i < pieImg.Length; i++)
         {

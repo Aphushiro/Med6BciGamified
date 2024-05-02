@@ -46,7 +46,7 @@ public class Game2Mng : MonoBehaviour
         int orient = 1;
         if (bucketCount%2 == 1) { orient = -1; }
 
-        Vector2 bucketPos = new Vector2(-6f * orient, 3.8f);
+        Vector2 bucketPos = new Vector2(-6.5f * orient, 3.5f);
         GameObject bucket = Instantiate(bucketObj, bucketPos, Quaternion.identity);
         BucketPref bucketCs = bucket.GetComponent<BucketPref>();
         bucketCs.dir = orient;
@@ -55,6 +55,7 @@ public class Game2Mng : MonoBehaviour
 
     IEnumerator BucketRest ()
     {
+        isResting = true;
         yield return new WaitForSeconds(restTime);
         isResting = false;
     }
