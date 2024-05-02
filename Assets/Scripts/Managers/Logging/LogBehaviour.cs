@@ -20,12 +20,57 @@ public class LogBehaviour : MonoBehaviour
     /// Buffer size
     /// 
 
+
+    public struct GameData
+    {
+        //public int frameCount;
+        public float confidence;
+        public float classificationThreshold;
+        public float bciThresholdBuffer;
+        public float bufferSize;
+    }
+
     LoggingManager loggingManager;
 
     private void Start()
     {
         loggingManager = FindObjectOfType<LoggingManager>();
     }
+
+    private void LogGameEvent ()
+    {
+        Dictionary<string, object> gameData = new Dictionary<string, object>()
+        {
+            
+        };
+    }
+    /*
+    public void GenerateUIDs()
+    {
+        sessionID = Md5Sum(System.DateTime.Now.ToString(SystemInfo.deviceUniqueIdentifier + "yyyy:MM:dd:HH:mm:ss.ffff").Replace(" ", "").Replace("/", "").Replace(":", ""));
+        deviceID = SystemInfo.deviceUniqueIdentifier;
+    }
+
+    public string Md5Sum(string strToEncrypt)
+    {
+        System.Text.UTF8Encoding ue = new System.Text.UTF8Encoding();
+        byte[] bytes = ue.GetBytes(strToEncrypt);
+
+        // encrypt bytes
+        System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+        byte[] hashBytes = md5.ComputeHash(bytes);
+
+        // Convert the encrypted bytes back to a string (base 16)
+        string hashString = "";
+
+        for (int i = 0; i < hashBytes.Length; i++)
+        {
+            hashString += System.Convert.ToString(hashBytes[i], 16).PadLeft(2, '0');
+        }
+
+        return hashString.PadLeft(32, '0');
+    }
+    */
     /*
     private void LogEvent(string eventLabel)
     {
