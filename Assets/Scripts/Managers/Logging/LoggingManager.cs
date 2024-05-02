@@ -40,7 +40,7 @@ public class LoggingManager : MonoBehaviour
 
     [SerializeField]
     private ConnectToMySQL connectToMySQL;
-
+    
 
 	[Header("CSV Save Settings")]
     [SerializeField]

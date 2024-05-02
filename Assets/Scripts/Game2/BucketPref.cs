@@ -22,7 +22,7 @@ public class BucketPref : MonoBehaviour
         Destroy(gameObject, Game2Mng.Instance.restTime);
     }
 
-    void FixedUpdate()
+    void Update()
     {
         float dist = Time.deltaTime * speed * dir;
         transform.Translate(Vector2.right*dist);

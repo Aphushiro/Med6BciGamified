@@ -202,7 +202,6 @@ GameObject:
   - component: {fileID: 160431066}
   - component: {fileID: 160431065}
   - component: {fileID: 160431064}
-  - component: {fileID: 160431067}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -217,7 +216,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160431063}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cbda6680f5fae447a416bb8f4b62e14, type: 3}
   m_Name: 
@@ -271,7 +270,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160431063}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e5ad83a9535c6f46ae36da9869377b8, type: 3}
   m_Name: 
@@ -333,40 +332,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &160431067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 160431063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54161aff039d05d4aab846ddede59e46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rejTrials: 5
-  accTrials: 10
-  fabTrials: 5
-  assistSuccessTrials: 0
-  assistFailTrials: 0
-  explicitShamTrials: 0
-  noInputReceivedFabAlarm: 0.5
-  fabAlarmVariability: 0.5
-  interTrialIntervalSeconds: 4.5
-  inputWindowSeconds: 1
-  onGameStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  gameDecision:
-    m_PersistentCalls:
-      m_Calls: []
-  onInputWindowChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  onGameTimeUpdate:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &274900976
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,6 +1782,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1984703053}
   - component: {fileID: 1984703052}
+  - component: {fileID: 1984703054}
   m_Layer: 0
   m_Name: LoggingManager
   m_TagString: Untagged
@@ -1859,6 +1825,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1984703054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984703051}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88b946cf910f4a41ab4a97879e08c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1994461610
 GameObject:
   m_ObjectHideFlags: 0
