@@ -26,7 +26,7 @@ public class LogBehaviour : MonoBehaviour
     {
         loggingManager = FindObjectOfType<LoggingManager>();
     }
-
+    /*
     private void LogEvent(string eventLabel)
     {
         Dictionary<string, object> gameLog = new Dictionary<string, object>() {
@@ -80,4 +80,5 @@ public class LogBehaviour : MonoBehaviour
     {
             EndGame();
     }
+    */
 }
