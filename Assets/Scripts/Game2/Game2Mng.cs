@@ -33,7 +33,7 @@ public class Game2Mng : MonoBehaviour
     {
         colorChoice = colorPalette[0];
         clock = GetComponentInChildren<ClockMng>();
-        Time.fixedDeltaTime = 0.2f;
+        Time.fixedDeltaTime = 0.02f;
     }
 
     public void OnMiEvent ()

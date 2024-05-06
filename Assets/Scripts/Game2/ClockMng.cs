@@ -9,7 +9,7 @@ public class ClockMng : MonoBehaviour
 
     public RectTransform handParent;
 
-    float handSpeed = 25f;
+    float handSpeed = 24f;
 
     bool isResting = false;
 

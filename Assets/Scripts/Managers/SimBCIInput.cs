@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Text;
+using Unity.Mathematics;
 
 /*
  * Activate by holding down button.
@@ -84,6 +85,10 @@ public class SimBCIInput : MonoBehaviour
     private float timer = 0f;
     private float waitTime = 0.14f;
 
+    public float avgTestAcc = 0.67f;
+    private int[] confPosRight = new int[] { 378, 1158, 1567, 2018, 2114 };
+    private int[] confPosWrong = new int[] { 483, 1891, 2458, 2637, 2831 };
+
     private Dictionary<string, List<string>> BCILogs;
 
     public OnBCIStateChanged onBCIStateChanged;
@@ -114,7 +119,7 @@ public class SimBCIInput : MonoBehaviour
         inputNumber = 0;
         confArray = BCIInput.text.Split('\n');
         maxConfPosition = confArray.Length-1;
-        confPosition = UnityEngine.Random.Range(0,maxConfPosition);
+        //confPosition = UnityEngine.Random.Range(0,maxConfPosition);
         correctConfArray = correctBCIInput.text.Split('\n');
         maxCorrectConfPosition = correctConfArray.Length-1;
         correctConfPosition = 0;
@@ -172,32 +177,46 @@ public class SimBCIInput : MonoBehaviour
             return;
         }
         timer += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            float pickAcc = UnityEngine.Random.Range(0f, 1f);
+            if (pickAcc < avgTestAcc)
+            {
+                int j = UnityEngine.Random.Range(0, confPosWrong.Length);
+                confPosition = confPosWrong[j];
+                Debug.Log("Failed");
+            } else
+            {
+                int j = UnityEngine.Random.Range(0, confPosRight.Length);
+                confPosition = confPosRight[j];
+                Debug.Log("Succeded");
+            }
+        }
         if (Input.GetKey(KeyCode.V) && timer > waitTime)
         {
             timer = 0f;
             confidence = float.Parse(confArray[confPosition], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            Debug.Log(confidence);
+            //Debug.Log(confidence);
             if (confPosition < maxConfPosition) {
                 confPosition++;
             } else {
                 confPosition = 0;
             }
         } else if (Input.GetKeyUp(KeyCode.V)) {
-            confPosition = UnityEngine.Random.Range(0,maxConfPosition);
             consecThresholdIndex = 0;
             Array.Clear(consecThresholdBuffer, 0, consecThresholdBuffer.Length);
             classification = MotorImageryEvent.Rest;
         } else if (Input.GetKey(KeyCode.C) && timer > waitTime) {
             timer = 0f;
             confidence = float.Parse(correctConfArray[correctConfPosition], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            Debug.Log(correctConfArray[correctConfPosition]);
-            if (correctConfPosition < maxCorrectConfPosition) {
+            //Debug.Log(correctConfArray[correctConfPosition]);
+            if (correctConfPosition < maxCorrectConfPosition && correctConfPosition + 1 < correctConfArray.Length) {
                 correctConfPosition++;
             } else {
                 correctConfPosition = 0;
             }
         } else if (Input.GetKeyUp(KeyCode.C)) {
-            Debug.Log("Clear");
+            //Debug.Log("Clear");
             correctConfPosition = 0;
             consecThresholdIndex = 0;
             Array.Clear(consecThresholdBuffer, 0, consecThresholdBuffer.Length);
