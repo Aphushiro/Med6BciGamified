@@ -36,12 +36,11 @@ public class Game2Mng : MonoBehaviour
         Time.fixedDeltaTime = 0.02f;
     }
 
-    public void OnMiEvent ()
+    public void OnResting (int state, float stateVal)
     {
-
-        if (isResting) { return; }
+        if (stateVal <= 0f) { return; }
         bucketCount++;
-        int clockState = clock.GetClockState();
+        int clockState = state;
         colorChoice = colorPalette[clockState];
 
         int orient = 1;
@@ -51,13 +50,6 @@ public class Game2Mng : MonoBehaviour
         GameObject bucket = Instantiate(bucketObj, bucketPos, Quaternion.identity);
         BucketPref bucketCs = bucket.GetComponent<BucketPref>();
         bucketCs.dir = orient;
-        StartCoroutine(BucketRest());
     }
 
-    IEnumerator BucketRest ()
-    {
-        isResting = true;
-        yield return new WaitForSeconds(restTime);
-        isResting = false;
-    }
 }

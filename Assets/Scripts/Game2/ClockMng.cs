@@ -2,10 +2,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine.Events;
+using System;
 
 public class ClockMng : MonoBehaviour
 {
-    public Image[] pieImg = new Image[4];
+    [Serializable]
+    public class OnRestingEvent : UnityEvent<int, float> { }
+
+    public OnRestingEvent OnResting;
+    public Image[] pieImg = new Image[3];
+    public Image[] feedbackImg = new Image[3];
 
     public RectTransform handParent;
 
@@ -13,16 +21,35 @@ public class ClockMng : MonoBehaviour
 
     bool isResting = false;
 
+    int lastState = 0;
     int currentlyOn = 0;
+    [SerializeField]
+    float[] clockValsMax = new float[3] { 0f, 0f, 0f };
 
-    private void Start()
+    bool gameIsStarted = false;
+
+
+    private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            gameIsStarted = true;
+        }
 
+        if (lastState != currentlyOn)
+        {
+            // Stuff we want to happen when clockState changes
+
+            lastState = currentlyOn;
+        }
+
+        // Things to update while not resting
+        if (isResting) { return; }
     }
 
     private void FixedUpdate()
     {
-        if (isResting) { return; }
+        if (gameIsStarted == false) { return; }
         float rotAmount = - (Time.deltaTime * (360f / handSpeed));
         handParent.Rotate(Vector3.forward, rotAmount);
 
@@ -34,43 +61,109 @@ public class ClockMng : MonoBehaviour
             pieImg[i].color = new Color(1, 1, 1, 0.5f);
         }
 
-        // Set color of choice
+
         if (zRot < 45 || zRot > 315f) // Top (0)
+        {
+            if (isResting) { return; }
+            isResting = true;
+            StartCoroutine(WaitForRest(Game2Mng.Instance.restTime));
+
+            return;
+        } else
+        {
+            handSpeed = 24f; // 6 * 4 = 24
+        }
+
+        // Set color of choice
+        if (zRot < 315f && zRot > 225f) // Right (1)
         {
             pieImg[0].color = Color.white;
             currentlyOn = 0;
-        } else if (zRot < 315f && zRot > 225f) // Right (1)
+        } else if (zRot < 225f && zRot > 135f) // Bottom (2)
         {
             pieImg[1].color = Color.white;
             currentlyOn = 1;
-        } else if (zRot < 225f && zRot > 135f) // Bottom (2)
+        } else // Left (3)
         {
             pieImg[2].color = Color.white;
             currentlyOn = 2;
-        } else // Left (3)
-        {
-            pieImg[3].color = Color.white;
-            currentlyOn = 3;
         }
     }
 
-    public void WaitForResting ()
+    IEnumerator WaitForRest (float time)
     {
-        if (isResting) { return; }
-        isResting = true;
-        StartCoroutine(Rest());
+        handSpeed = time * 4; // 8 * 4 = 32
+        int highState = GetClockState();
+        OnResting.Invoke(highState, clockValsMax[highState]);
+        Debug.Log(clockValsMax);
 
+        ResetMaxVals();
+        yield return new WaitForSeconds(time + 0.1f);
+        isResting = false;
     }
 
-    IEnumerator Rest ()
+    public void ResetMaxVals()
     {
-        yield return new WaitForSeconds(Game2Mng.Instance.restTime);
-        isResting = false;
+        clockValsMax = new float[3] { 0, 0, 0 };
+
+        foreach (Image img in feedbackImg)
+        {
+            img.enabled = false;
+        }
+    }
+
+    public void UpdateClockMax (float newVal)
+    {
+        // Runs in OnBCI event
+        if (isResting || gameIsStarted == false) { ResetMaxVals(); return; }
+        if (newVal < clockValsMax[currentlyOn])
+        {
+            return;
+        }
+        clockValsMax[currentlyOn] = newVal;
+        SetClockFeedback();
     }
 
     public int GetClockState ()
     {
-        WaitForResting();
-        return currentlyOn;
+        int higherState = 0;
+        float highVal = 0f;
+        for (int i = 0; i < clockValsMax.Length; i++)
+        {
+            if (clockValsMax[i] > highVal)
+            {
+                highVal = clockValsMax[i];
+                higherState = i;
+            }
+        }
+
+        return higherState;
+    }
+
+    void SetClockFeedback ()
+    {
+        if (clockValsMax == null || clockValsMax.Length == 0)
+        {
+            // Handle empty or null array case
+            return;
+        }
+
+        int maxIndex = 0;
+        float maxValue = clockValsMax[0];
+
+        for (int i = 1; i < clockValsMax.Length; i++)
+        {
+            if (clockValsMax[i] > maxValue)
+            {
+                maxValue = clockValsMax[i];
+                maxIndex = i;
+            }
+        }
+        foreach (Image img in feedbackImg)
+        {
+            img.enabled = false;
+        }
+
+        feedbackImg[maxIndex].enabled = true;
     }
 }
