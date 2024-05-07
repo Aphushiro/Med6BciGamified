@@ -127,7 +127,7 @@ public class LoggingBehaviour : MonoBehaviour
         loggingManager.Log("Game", gameLog);
     }
 
-    public void LogHitGamesSample (string eventLabel, float curConf, float maxConf, bool hit)
+    public void LogGolfSample (string eventLabel, float curConf, float maxConf, bool hit)
     {
         Dictionary<string, object> maxSample = new Dictionary<string, object>() {
             {"Event", eventLabel},

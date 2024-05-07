@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random=UnityEngine.Random;
+using System.Diagnostics;
 
 public class MaxThresholdScript : MonoBehaviour
 {
@@ -69,7 +70,6 @@ public class MaxThresholdScript : MonoBehaviour
             Destroy(this);
 
         DontDestroyOnLoad(this);
-        logCopy = Instantiate(ChopLog, ParentGameobject.transform);
         arrayMax = arraySounds.Length;
         
         announcementText = GameObject.Find("AnnouncementText").GetComponent<TextMeshProUGUI>();
@@ -91,11 +91,14 @@ public class MaxThresholdScript : MonoBehaviour
     {
         isGameRunning = true;
         
+        logCopy = Instantiate(ChopLog, ParentGameobject.transform);
+        UnityEngine.Debug.Log($"{transform.gameObject.name}/{new StackTrace()?.GetFrame(1)?.GetMethod()?.ReflectedType?.Name}: Instantiated logCopy: {logCopy.name} at {ParentGameobject.name} from {ChopLog} prefab.");
+        
         yield return StartCoroutine(StartBreakTime(breakPeriodDuration+2));
 
         while (logsChopped < totalLogs)
         {
-            Debug.Log($"YOU'RE CHOPPING LOG NUMBER {logsChopped + 1}! AFTER THIS THERE ARE {totalLogs - logsChopped - 1} LOGS LEFT: ");
+            UnityEngine.Debug.Log($"YOU'RE CHOPPING LOG NUMBER {logsChopped + 1}! AFTER THIS THERE ARE {totalLogs - logsChopped - 1} LOGS LEFT: ");
             yield return StartCoroutine(StartActiveTime());
             if (logsChopped == totalLogs)
                 break;
@@ -157,7 +160,7 @@ public class MaxThresholdScript : MonoBehaviour
         _damageAmount = MaxSlider.value;
         
         MaxSlider.value = 0;  //Resets MaxValue of slider
-        Debug.Log($"MaxSlider.value set to : {MaxSlider.value}");
+        UnityEngine.Debug.Log($"MaxSlider.value set to : {MaxSlider.value}");
         
         _axe.RotateAxe(axeChopLerpTime, 0f,true);
         
@@ -180,12 +183,12 @@ public class MaxThresholdScript : MonoBehaviour
         soundToPlay = Random.Range(0, arrayMax);
         audioSource.clip = arraySounds[soundToPlay];
         audioSource.Play();
-        Debug.Log("Health:" + currentHealth);
+        UnityEngine.Debug.Log("Health:" + currentHealth);
         
         if (currentHealth <= 0)
         {
             currentHealth = maxHealth;
-            Debug.Log("Try: Destroy Wood");
+            UnityEngine.Debug.Log("Try: Destroy Wood");
             Destroy(logCopy);
             logsChopped++;
             StartCoroutine(SpawnNewLogAfterDelay(breakPeriodDuration - axeChopLerpTime));
@@ -196,6 +199,7 @@ public class MaxThresholdScript : MonoBehaviour
     {
         yield return new WaitForSeconds(delay-2);
         logCopy = Instantiate(ChopLog, ParentGameobject.transform);
+        UnityEngine.Debug.Log($"{transform.gameObject.name}/{new StackTrace()?.GetFrame(1)?.GetMethod()?.ReflectedType?.Name}: Instantiated logCopy: {logCopy.name} at {ParentGameobject.name} from {ChopLog} prefab.");
         HealthBarImageRed.fillAmount = 1;
         healthBarImage.fillAmount = 1;
     }
