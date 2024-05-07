@@ -10,7 +10,7 @@ public class BucketPref : MonoBehaviour
     [HideInInspector]
     public float dir = 1f;
     float speed = 1.0f;
-    float distance = 8f;
+    float distance = 9f;
 
     float spawnTime = 0f;
     float cTimeToSpawn = 0f;

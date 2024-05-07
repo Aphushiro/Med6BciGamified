@@ -2072,11 +2072,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abf784f4fb211842b9f774449faa7b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CreateMetaCollection: 1
+  CreateMetaCollection: 0
   enableMySQLSave: 0
   email: anonymous
   connectToMySQL: {fileID: 0}
-  enableCSVSave: 1
+  enableCSVSave: 0
   savePath: 
   filePrefix: log
   fileExtension: .csv
