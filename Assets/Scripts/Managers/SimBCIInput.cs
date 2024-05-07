@@ -127,6 +127,7 @@ public class SimBCIInput : MonoBehaviour
 
     private void LogMeta() {
         Dictionary<string, object> metaLog = new Dictionary<string, object>() {
+            {"InputType", "SimulationReceiver"},
             {"ConfidenceThreshold", classificationThreshold},
             {"BCIProcessingMode", Enum.GetName(typeof(BCIProcessingMode), bciProcessingMode)},
             {"ConsecutiveThresholdBufferSize", consecutiveBufferSize},
@@ -184,12 +185,12 @@ public class SimBCIInput : MonoBehaviour
             {
                 int j = UnityEngine.Random.Range(0, confPosWrong.Length);
                 confPosition = confPosWrong[j];
-                Debug.Log("Failed");
+                //Debug.Log("Failed");
             } else
             {
                 int j = UnityEngine.Random.Range(0, confPosRight.Length);
                 confPosition = confPosRight[j];
-                Debug.Log("Succeded");
+                //Debug.Log("Succeded");
             }
         }
         if (Input.GetKey(KeyCode.V) && timer > waitTime)
@@ -231,7 +232,7 @@ public class SimBCIInput : MonoBehaviour
        }
        // Update() runs faster (1/60) than our input data (1/16) arrives.
        // The code below is only run whenever a new value comes in from the BCI side.
-       LogSample("Sample");
+       //LogSample("Sample");
        InputData inputData = new InputData();
        inputData.confidence = confidence;
        inputData.type = InputType.MotorImagery;

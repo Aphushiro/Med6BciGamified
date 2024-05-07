@@ -133,6 +133,7 @@ public class OpenBCIInput : MonoBehaviour
 
     private void LogMeta() {
         Dictionary<string, object> metaLog = new Dictionary<string, object>() {
+            {"InputType", "BCIReceiver"},
             {"ConfidenceThreshold", classificationThreshold},
             {"BCIProcessingMode", Enum.GetName(typeof(BCIProcessingMode), bciProcessingMode)},
             {"ConsecutiveThresholdBufferSize", consecutiveBufferSize},
@@ -187,7 +188,7 @@ public class OpenBCIInput : MonoBehaviour
        }
        // Update() runs faster (1/60) than our input data (1/16) arrives.
        // The code below is only run whenever a new value comes in from the BCI side.
-       LogSample("Sample");
+       //LogSample("Sample");
        InputData inputData = new InputData();
        inputData.confidence = 1 - confidence;
        inputData.type = InputType.MotorImagery;

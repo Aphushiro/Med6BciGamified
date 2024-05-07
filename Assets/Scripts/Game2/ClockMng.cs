@@ -10,6 +10,7 @@ public class ClockMng : MonoBehaviour
 {
     [Serializable]
     public class OnRestingEvent : UnityEvent<int, float> { }
+    private LoggingBehaviour logCaller;
 
     public OnRestingEvent OnResting;
     public Image[] pieImg = new Image[3];
@@ -25,21 +26,34 @@ public class ClockMng : MonoBehaviour
     int currentlyOn = 0;
     [SerializeField]
     float[] clockValsMax = new float[3] { 0f, 0f, 0f };
+    float curConfidence = -1f;
 
     bool gameIsStarted = false;
 
+    private void Start()
+    {
+        logCaller = FindObjectOfType<LoggingBehaviour>();
+    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (gameIsStarted == false)
+            {
+                logCaller.LogEvent("GameStarted");
+            }
+
             gameIsStarted = true;
         }
 
         if (lastState != currentlyOn)
         {
             // Stuff we want to happen when clockState changes
-
+            
+            
+            // Log last sample of state. Not needed if we log every sample anyways
+            //logCaller.LogStateFinalSample("Sample", lastState, clockValsMax[lastState], clockValsMax);
             lastState = currentlyOn;
         }
 
@@ -65,6 +79,7 @@ public class ClockMng : MonoBehaviour
         if (zRot < 45 || zRot > 315f) // Top (0)
         {
             if (isResting) { return; }
+            currentlyOn = 0;
             isResting = true;
             StartCoroutine(WaitForRest(Game2Mng.Instance.restTime));
 
@@ -95,7 +110,7 @@ public class ClockMng : MonoBehaviour
         handSpeed = time * 4; // 8 * 4 = 32
         int highState = GetClockState();
         OnResting.Invoke(highState, clockValsMax[highState]);
-        Debug.Log(clockValsMax);
+        logCaller.LogClockResting("Resting", curConfidence, clockValsMax);
 
         ResetMaxVals();
         yield return new WaitForSeconds(time + 0.1f);
@@ -114,14 +129,20 @@ public class ClockMng : MonoBehaviour
 
     public void UpdateClockMax (float newVal)
     {
+        curConfidence = newVal;
+
         // Runs in OnBCI event
-        if (isResting || gameIsStarted == false) { ResetMaxVals(); return; }
-        if (newVal < clockValsMax[currentlyOn])
+        if (newVal > clockValsMax[currentlyOn])
         {
-            return;
+            if (isResting || gameIsStarted == false) 
+            { ResetMaxVals(); } 
+            else
+            {
+                clockValsMax[currentlyOn] = newVal;
+                SetClockFeedback();
+            }
         }
-        clockValsMax[currentlyOn] = newVal;
-        SetClockFeedback();
+        logCaller.LogClockSample("Sample", newVal, currentlyOn, clockValsMax[currentlyOn], clockValsMax);
     }
 
     public int GetClockState ()
