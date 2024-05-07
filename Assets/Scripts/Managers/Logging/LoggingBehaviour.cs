@@ -91,14 +91,15 @@ public class LoggingBehaviour : MonoBehaviour
     }
 
     // Lumberjack logging
-    public void LogLumberResting (string eventLabel, float curConf, float maxConf, float damage, float remainDam)
+    public void LogLumberResting (string eventLabel, float curConf, float maxConf, float damageDone, float remainHealth, float totalHealth)
     {
         Dictionary<string, object> gameLog = new Dictionary<string, object>() {
             {"Event", eventLabel},
             {"BCIConfidence", curConf},
             {"MaxConfidence", maxConf},
-            {"Damage", damage},
-            {"DamRemaining", remainDam}
+            {"DamageDone", damageDone},
+            {"HealthRemaining", remainHealth},
+            {"TotalHealth", totalHealth},
         };
         loggingManager.Log("Game", gameLog);
     }
@@ -115,7 +116,7 @@ public class LoggingBehaviour : MonoBehaviour
     }
 
     // Golf logging
-    public void LogGolfResting(string eventLabel, float curConf, float maxConf, float distance, float remainDist, bool hit)
+    public void LogGolfResting(string eventLabel, float curConf, float maxConf, float distance, float remainDist, float totalDist, bool hit)
     {
         Dictionary<string, object> gameLog = new Dictionary<string, object>() {
             {"Event", eventLabel},
@@ -123,6 +124,7 @@ public class LoggingBehaviour : MonoBehaviour
             {"MaxConfidence", maxConf},
             {"Distance", distance},
             {"DistRemaining", remainDist},
+            {"TotalDistance", totalDist},
             {"BallWasHit", hit}
         };
         loggingManager.Log("Game", gameLog);

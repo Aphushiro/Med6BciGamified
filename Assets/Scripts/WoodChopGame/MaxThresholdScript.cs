@@ -13,6 +13,7 @@ using System.Diagnostics;
 public class MaxThresholdScript : MonoBehaviour
 {
     [Header("References")]
+    LoggingBehaviour loggingBehaviour;
     public static MaxThresholdScript Instance;
     public DestroyLogScript destroyLogScript;
     [SerializeField] private AxeScript _axe;
@@ -73,12 +74,16 @@ public class MaxThresholdScript : MonoBehaviour
         arrayMax = arraySounds.Length;
         
         announcementText = GameObject.Find("AnnouncementText").GetComponent<TextMeshProUGUI>();
+        loggingBehaviour = FindObjectOfType<LoggingBehaviour>();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown("space") && isGameRunning == false && hasGameRun == false)
+        {
+            loggingBehaviour.LogEvent("GameStarted");
             StartCoroutine(RunGame(amountOfLogs));
+        }
         
         if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -130,6 +135,8 @@ public class MaxThresholdScript : MonoBehaviour
             
             _axe.RotateAxe(axeWindupLerpTime, GetRotationFraction(MaxSlider.value));
         }
+        
+        loggingBehaviour.LogLumberSample("Sample", absoluteSlider.value, MaxSlider.value);
     }
 
     public void BCI_Action()
@@ -270,6 +277,8 @@ public class MaxThresholdScript : MonoBehaviour
     
     IEnumerator StartBreakTime(float seconds)
     {
+        loggingBehaviour.LogLumberResting("Resting", absoluteSlider.value, MaxSlider.value, currentHealth, maxHealth-currentHealth, maxHealth);
+        
         _isRestingPeriod = true;
         StartCoroutine(LerpAnimateClockBreak(1f, seconds));
 

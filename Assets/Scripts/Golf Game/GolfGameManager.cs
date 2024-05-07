@@ -312,7 +312,7 @@ public class GolfGameManager : MonoBehaviour
     
     IEnumerator StartBreakTime(float seconds)
     {
-        loggingBehaviour.LogGolfResting("Resting", absoluteSlider.value, MaxSlider.value, currentDistance, maxDistance-currentDistance, _isBallHit);
+        loggingBehaviour.LogGolfResting("Resting", absoluteSlider.value, MaxSlider.value, currentDistance, maxDistance-currentDistance, maxDistance, _isBallHit);
         
         _isRestingPeriod = true;
         StartCoroutine(LerpAnimateClockBreak(1f, seconds));
