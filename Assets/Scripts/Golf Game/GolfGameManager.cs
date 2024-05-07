@@ -68,6 +68,7 @@ public class GolfGameManager : MonoBehaviour
     private bool _isBallHit = false;
     private bool _isBallFlying;
     private Coroutine restTextCoroutine;
+    private bool miDetected = false;
     
      //////////////////////////////////////////////////////////////////////////////////////////////////////
      
@@ -83,7 +84,7 @@ public class GolfGameManager : MonoBehaviour
         
         announcementText = GameObject.Find("AnnouncementText").GetComponent<TextMeshProUGUI>();
         distanceNumberText = GameObject.Find("DistanceNumberText").GetComponent<TextMeshProUGUI>();
-        distanceNumberText.text = currentDistance.ToString() + " m";
+        distanceNumberText.text = $"{currentDistance:F2} m";
         
         loggingBehaviour = FindObjectOfType<LoggingBehaviour>();
     }
@@ -116,7 +117,11 @@ public class GolfGameManager : MonoBehaviour
         {
             yield return StartCoroutine(StartActiveTime());
             if (ballsPlayed == totalBallsToPlay)
-                continue;
+            {
+                break;
+                Debug.Log("Ending Game. Skipping last break");
+            }
+                
             yield return StartCoroutine(StartBreakTime(breakPeriodDuration));
         }
         
@@ -161,18 +166,13 @@ public class GolfGameManager : MonoBehaviour
 
     IEnumerator StartActiveTime()
     {
+        miDetected = false;
+        
         ClockImage.fillAmount = 1; //Resets clock fill after attack
         StartCoroutine(LerpAnimateClockActive(0f, activePeriodDuration));
         SetActivePeriodText();
         
         yield return new WaitForSeconds(activePeriodDuration - 0.5f);
-
-        if (MaxSlider.value < BCI_InputMinimum + 0.03f)
-        {
-            Debug.Log("Too low");
-            MaxSlider.value =  Math.Max(MaxSlider.value,0.1f);
-            _club.RotateClub(clubWindupLerpTime, GetRotationFraction(MaxSlider.value));
-        }
         
         yield return new WaitForSeconds(0.5f);
         
@@ -180,11 +180,7 @@ public class GolfGameManager : MonoBehaviour
         
         //Debug.Log($"Maxslider: {MaxSlider.value}. BCI threshold: {BCI_InputMinimum}");
         
-        if (MaxSlider.value < BCI_InputMinimum)
-        {
-            _isBallHit = false;
-        }
-        else
+        if (miDetected)
         {
             yield return new WaitForSeconds(clubChopLerpTime/2);
             announcementText.text = "";
@@ -192,12 +188,16 @@ public class GolfGameManager : MonoBehaviour
             ClockImage.color = Color.white;
             ClockImage.fillAmount = 1;
             HitBall();
-            /*
-            _isBallFlying = true;
-            yield return StartCoroutine(TrackBallAfterHit());
-            _isBallFlying = false;
-            */
         }
+        else
+        {           
+            Debug.Log("MI Not Detected");
+            _isBallHit = false;
+            MaxSlider.value =  Math.Max(MaxSlider.value,0.1f);
+            _club.RotateClub(clubWindupLerpTime, GetRotationFraction(MaxSlider.value));
+        }
+        
+        miDetected = false;
     }
 
     private IEnumerator TrackBallAfterHit()
@@ -261,10 +261,15 @@ public class GolfGameManager : MonoBehaviour
         soundToPlay = Random.Range(0, arrayMax);
         audioSource.clip = arraySounds[soundToPlay];
         audioSource.Play();
-        
-        
     }
 
+    public void LogHitBall()
+    {
+        if (_isRestingPeriod) return;
+        miDetected = true;
+        loggingBehaviour.LogOnMiGolf("SuccessfulHit", absoluteSlider.value, MaxSlider.value, _isBallHit);
+    }
+    
     IEnumerator LerpAnimateClockActive(float targetFillAmount, float duration)
     {        
         ClockImage.color = Color.green;
@@ -407,12 +412,12 @@ public class GolfGameManager : MonoBehaviour
                 //debug.Log($"LogChopped. Format: {format}");
                 announcementText.color = Color.white;
                 announcementText.text = "";
-                announcementText.text = $"Well done!\n{amountOfHoles-ballsPlayed} ball{(amountOfHoles-ballsPlayed > 1 ? "s" : "")} left!";
+                announcementText.text = $"Well done!\n{amountOfHoles-ballsPlayed} ball{(amountOfHoles-ballsPlayed != 1 ? "s" : "")} left!";
                 yield return new WaitForSeconds(timeLeft-2);
                 announcementText.color = Color.yellow;
-                announcementText.text = "Get ready!!";
+                announcementText.text = ballsPlayed == amountOfHoles ? "" : "Get ready!!";
                 distanceNumberText.color = Color.white;
-                distanceNumberText.text = currentDistance.ToString() + " m";
+                distanceNumberText.text = $"{currentDistance:F2} m";
                 _club.RotateClub(clubWindupLerpTime*2, 0f);
                 yield return new WaitForSeconds(2);
                 DestroyAndReplaceBall();
