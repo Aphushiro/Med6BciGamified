@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using Unity.Burst.CompilerServices;
 using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
 
@@ -56,7 +57,7 @@ public class LoggingBehaviour : MonoBehaviour
     public void LogClockSample (string eventLabel, float curConf, int curState, float stateMax, float[] maxConf)
     {
 
-        Dictionary<string, object> maxSample = new Dictionary<string, object>() {
+        Dictionary<string, object> clockSample = new Dictionary<string, object>() {
             {"Event", eventLabel},
             {"BCIConfidence", curConf},
             {"ClockState", curState},
@@ -66,7 +67,7 @@ public class LoggingBehaviour : MonoBehaviour
             {"ColMax2", maxConf[2]}
         };
 
-        loggingManager.Log("Sample", maxSample);
+        loggingManager.Log("Sample", clockSample);
     }
 
     public void LogStateFinalSample (string eventLabel, float curConf, int curState, float stateMax, float[] maxConf)
@@ -104,13 +105,13 @@ public class LoggingBehaviour : MonoBehaviour
 
     public void LogLumberSample(string eventLabel, float curConf, float maxConf)
     {
-        Dictionary<string, object> maxSample = new Dictionary<string, object>() {
+        Dictionary<string, object> logSample = new Dictionary<string, object>() {
             {"Event", eventLabel},
             {"BCIConfidence", curConf},
             {"ClockState", maxConf},
         };
 
-        loggingManager.Log("Sample", maxSample);
+        loggingManager.Log("Sample", logSample);
     }
 
     // Golf logging
@@ -120,8 +121,8 @@ public class LoggingBehaviour : MonoBehaviour
             {"Event", eventLabel},
             {"BCIConfidence", curConf},
             {"MaxConfidence", maxConf},
-            {"Damage/Distance", distance},
-            {"DamDistRemaining", remainDist},
+            {"Distance", distance},
+            {"DistRemaining", remainDist},
             {"BallWasHit", hit}
         };
         loggingManager.Log("Game", gameLog);
@@ -129,13 +130,25 @@ public class LoggingBehaviour : MonoBehaviour
 
     public void LogGolfSample (string eventLabel, float curConf, float maxConf, bool hit)
     {
-        Dictionary<string, object> maxSample = new Dictionary<string, object>() {
+        Dictionary<string, object> golfSample = new Dictionary<string, object>() {
             {"Event", eventLabel},
             {"BCIConfidence", curConf},
-            {"ClockState", maxConf},
-            {"StateMaxConf", hit},
+            {"MaxConfidence", maxConf},
+            {"BallWasHit", hit},
         };
 
-        loggingManager.Log("Sample", maxSample);
+        loggingManager.Log("Sample", golfSample);
+    }
+
+    public void LogOnMiGolf (string eventLabel, float curConf, float maxConf, bool hit)
+    {
+        Dictionary<string, object> golfMi = new Dictionary<string, object>() {
+            {"Event", eventLabel},
+            {"BCIConfidence", curConf},
+            {"MaxConfidence", maxConf},
+            {"BallWasHit", hit},
+        };
+
+        loggingManager.Log("Game", golfMi);
     }
 }

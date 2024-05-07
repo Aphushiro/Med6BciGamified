@@ -51,5 +51,4 @@ public class Game2Mng : MonoBehaviour
         BucketPref bucketCs = bucket.GetComponent<BucketPref>();
         bucketCs.dir = orient;
     }
-
 }
