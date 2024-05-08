@@ -355,6 +355,7 @@ public class GolfGameManager : MonoBehaviour
             // Calculate the elapsed time and the interpolation factor
             float elapsedTime = Time.time - startTime;
             float t = elapsedTime / duration;
+            t = 1 - Mathf.Pow(1 - t, 3);
 
             // Interpolate between the start and end values based on the interpolation factor
             float currentValue = Mathf.Lerp(startValue, endValue, t);

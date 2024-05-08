@@ -38,7 +38,7 @@ public class Game2Mng : MonoBehaviour
 
     public void OnResting (int state, float stateVal)
     {
-        if (stateVal <= 0f) { return; }
+        if (stateVal <= 0f && Time.time < 7f) { return; }
         bucketCount++;
         int clockState = state;
         colorChoice = colorPalette[clockState];

@@ -181,7 +181,7 @@ public class SimBCIInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.V))
         {
             float pickAcc = UnityEngine.Random.Range(0f, 1f);
-            if (pickAcc < avgTestAcc)
+            if (pickAcc > avgTestAcc)
             {
                 int j = UnityEngine.Random.Range(0, confPosWrong.Length);
                 confPosition = confPosWrong[j];
