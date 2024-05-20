@@ -252,7 +252,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160431063}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cbda6680f5fae447a416bb8f4b62e14, type: 3}
   m_Name: 
@@ -263,7 +263,6 @@ MonoBehaviour:
   bciProcessingMode: 1
   BCIInput: {fileID: 4900000, guid: 6229c1983a12a6b47b2a8fd81f3fe5fd, type: 3}
   correctBCIInput: {fileID: 4900000, guid: 030b588b04fe407499c94775fd9cb63e, type: 3}
-  avgTestAcc: 0.67
   onBCIStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -343,14 +342,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160431063}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e5ad83a9535c6f46ae36da9869377b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Host: localhost
   Port: 5677
-  classificationThreshold: 0.75
+  classificationThreshold: 0.68
   consecutiveBufferSize: 8
   motorImageryEvent: 
   bciProcessingMode: 1
@@ -2040,7 +2039,7 @@ MonoBehaviour:
   axeWindupLerpTime: 0.25
   axeChopLerpTime: 0.05
   announcementText: {fileID: 551639868}
-  BCI_InputMinimum: 0.4
+  BCI_InputMinimum: 0.25
   MaxSlider: {fileID: 796809480}
   absoluteSlider: {fileID: 274900978}
   ChopLog: {fileID: 1479960919743008859, guid: f15d79f0332f4f4409c30455f4ca6ba2, type: 3}
@@ -2305,7 +2304,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818773649}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -340, y: -153, z: 0}
+  m_LocalPosition: {x: -360, y: -153, z: 0}
   m_LocalScale: {x: 2.0995078, y: 2.0995078, z: 2.0995078}
   m_ConstrainProportionsScale: 0
   m_Children:

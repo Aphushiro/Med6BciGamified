@@ -180,10 +180,7 @@ public class MaxThresholdScript : MonoBehaviour
     public void TakeDamage()
     {
 
-        if (BCI_InputMinimum >= 0.4)
-        {
-            currentHealth -= _damageAmount- BCI_InputMinimum;
-        }
+        currentHealth -= _damageAmount - 0.4f < 0.03 ? 0.03f : _damageAmount-0.4f;
         
         UpdateHealthBar();
         

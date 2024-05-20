@@ -85,7 +85,7 @@ public class SimBCIInput : MonoBehaviour
     private float timer = 0f;
     private float waitTime = 0.14f;
 
-    public float avgTestAcc = 0.67f;
+    float avgTestAcc = 0.8f;
     private int[] confPosRight = new int[] { 378, 1158, 1567, 2018, 2114 };
     private int[] confPosWrong = new int[] { 483, 1891, 2458, 2637, 2831 };
 
